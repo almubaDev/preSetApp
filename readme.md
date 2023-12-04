@@ -18,6 +18,27 @@ Actualmente, preSetApp incluye las siguientes aplicaciones:
 
 (Más aplicaciones pueden ser agregadas en el futuro).
 
+## Por seguridad recuerda crear tus variables de entorno y hacer las modificaciones necesarías para correr las aplicaciones.
+* ### Sugerencia de uso de dotenv para manejar tus variables de entorno
+
+* Desde la terminal ejecuta `pip install python-dotenv`.
+
+* Crea un archivo en la raiz de tu proyecto, a la altura del manage.py y nombralo ".env" y escribe en el las varibales de entorno que deseas utilizar, sigue este ejemplo:
+ ```python
+    MI_CLAVE_SUPER_SECRETA=fsdfsdfsdf242345234534#d)))$!#"#!
+    #Recuerda no generar espacios entre el nombre de la variable, el signo = y el valor.
+    #El valor deber ir sin comillas ni al inicio ni al final, incluso si el valor a almacenar es una cadena.
+ ```
+
+* En tu archivo.py donde necesite usar la variable escribe: 
+ ```python
+    from dotenv import load_dotenv
+    import os
+    load_dotenv()
+
+    MY_PASSWORD = os.getenv('MI_CLAVE_SUPER_SECRETA')
+ ```
+ * Asegurate de crear tu archivo .gitignore y añadir .env en él. 
 
 ## Contribuciones
 
