@@ -64,4 +64,156 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
 
 # Documentación
 
-## Modelos `models.py`
+## Modelo `models.py`
+
+```python
+    class CustomUserManager(BaseUserManager):
+```
+* BaseUserMAnager es una clase base proporcioada por Django para la gestión de usuarios, y extendemos sus funcionalidades a nuesta clase personalizada CustomUserManager.
+
+
+```python
+    if not email:
+        raise ValueError('El campo "email" es obligatorio.')
+```
+* La función create_user debe recibir como argumentos un email, una password que se configurará como None por defecto en caso de no asignar una, se debe tener en cuenta que la contraseña será exigida igualmente, ya que no permitirá el campo vacío o que no se cumplan los parametros básico de extención y formato, alo anterior se suma una cantidad indeterminada de campos (**Kwargs formato disccionario) que se deseen añadir, también se condiciona el ingreso de un email, al no hacerlo se levantará una excepción.
+
+
+```python
+    email = self.normalize_email(email)
+```
+* La normalización del email campo Asegura que esté en un formato estandarizado, garantizando la unifromidad en la base de datos. 
+
+
+```python
+    user = self.model(email=email, **extra_fields)
+```
+*Crea una instancia del modelo usuario con su respectivo email y campos personalizados, sin el password ya que este necesita un paso previo antes de ser integrada a la instancia.
+
+
+```python
+    user.set_password(password)
+```
+*El método cifra y almacena la contraseña de forma segura.
+
+
+```python
+    user.save(using=self._db)
+```
+*Conecta a la base de datos y guarda la instancia de usuario que se ha creado.
+
+
+```python
+    return user
+```
+* Retorna la instancia recién creada para seguir trabajando con ella.
+
+
+```python
+    def create_superuser(self, email, password=None, **extra_fields):
+```
+* La función crea un súper usuario siguiendo la misma lógica de parametros que  `create_user`.
+
+
+```python
+    extra_fields.setdefault('is_superuser', True)
+    extra_fields.setdefault('is_staff', True)
+```
+*Se crean y configuran por defecto los atributos `is_superuser` e `is_staff` en `True`.
+
+
+```python
+    if extra_fields.get('is_staff') is not True:
+        raise ValueError('Superuser debe tener is_staff=True.')
+    if extra_fields.get('is_superuser') is not True:
+        raise ValueError('Superuser debe tener is_superuser=True.')
+```
+* Realiza la comporbación del valor True en ambos atributos, de no ser así levantará sus respectivas excepciones, esto es importante ya que se necesita de los permisos necesarios para realizar diversas acciones y Django reconoce estos campos para autorizarlas (Por ejemplo al panel de administación de Django), entro otras razones. 
+
+
+```python
+    return self.create_user(email, password, **extra_fields)
+```
+* De cumplirse todos los requemientos, la función retornará un usuario con los permisos necesarios, para crear el usuario hará uso de la función `create_user`definida previamente. 
+
+
+```python
+    class CustomUser(AbstractBaseUser, PermissionsMixin):
+
+```
+* La clase define al usuario personalizado. hereda de `AbstractBaseUser` que proporciona una funcionalidad básica para la creación de un usuario personalizado, `PermissionsMixin` agrega atributos y métodos para trabajar con permisos.
+
+
+```python
+    groups = models.ManyToManyField(
+        Group,
+        verbose_name=('groups'),
+        blank=True,
+        help_text=('The groups this user belongs to.'),
+        related_name='custom_users_groups'  # Elige un nombre personalizado
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        verbose_name=('user permissions'),
+        blank=True,
+        help_text=('Specific permissions for this user.'),
+        related_name='custom_users_permissions'  # Elige un nombre personalizado
+    )
+```
+* El atributo `groups` `user_permissions` y  crea una relación de muchos a mucho con el modelo Group o Permission propios de Django, entendiendo que un usuario puede pertenecer a multiples grupos o poseer diversos permiso, como también que cada grupo o permiso puede integrar muchos usuarios.
+* `Group` o `Permission` permite que mediante el nombre del objeto relacionado Group accede al usuarios pertenecientes a él, `Group.custom_users_groups.all()` o `Permission.custom_users_permissions`.   
+* `verbose_name` es un atributo opcional que proprociona una etiqueta descriptiva al campo.
+* `blank=True` Indica y permite que el campo pueda estar en blanco en los formularios de creación del usuario personalizado, en este contexto indica que el usuario puede pertener a cero o más grupos.
+* `help_text` Proporciona un mensaje de ayuda ha mostarse en los formularios, indica a que refiere el campo las condiciones que ha de tener para cumplimentarlo a cabalidad.
+* `related_name` Proporciona un nombre personalizado para la relación inversa del modelo.
+
+
+```python
+    email = models.EmailField(unique=True)
+    full_name = models.CharField(max_length=100)
+    country = models.CharField(max_length=25)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(auto_now_add=True)
+```
+* Los campos requeridos para crear un usuario, por tanto, la información que solicitaremos y almacenaremos en la base de datos. 
+* `is_active` permite activar o desactivar a un usuario dentro de nuestra aplicación si necesidad de eliminarlo de la base de datos, por tanto conservará los datos relacionados a su cuenta en caso de quere volver a activarse.
+* `is_staff` permite darle un grado mayor de permisos a la instancia del usuario en particular, pudiendo acceder a la consola de administación entre otros.
+* ` date_joined` alamcena la fecha de creación del usuario. El atributo `auto_now_add=True` establece la hora y la fecha actual en el momento en que se crea el usuario de forma automática, por tanto, este campo no debe ser cumplimentado desde el formulario de creación de usuario. 
+
+
+```python
+    objects = CustomUserManager()
+```
+* Proporsion un gestor personalizado al modelo usuario, en este caso lo hará mediante la asignación la clase `CustomUserManager` que hemos configurado al principio, la cuál de fine cómo se gestionan los usuarios. 
+
+
+
+```python
+    USERNAME_FIELD = 'email'
+```
+* Especifica que se usara el campo de email como nombre de usuario al acceder al modelo usuario, un ejemplo practico es que podrá iniciar sesión con el email y la contraseña. 
+
+
+```python
+    REQUIRED_FIELDS = []
+```
+* La lista vacía indca que no requiere de ningún campo adicional para la creación de un usario más allá del email y password. Esto no evita que gestionemos la logica necesaria en nuestros campos, vistas o formularios para exigir al usuario el ingreso del resto de los datos referente los campos.
+
+
+```python
+    def __str__(self):
+        return self.email
+
+```
+* El metodo devuelve una el email del usuario como representación del objeto, haciendolo más legible en impresión por consola o su visulización en el administrador de Django.
+
+
+```python
+```
+```python
+```
+```python
+```
+```python
+```
