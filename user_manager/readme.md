@@ -21,7 +21,7 @@ Esta es una aplicación simple en Django para configurar un usuario completament
     ]
 ```
 * ### Nota
-* Puede comporbar la si la aplicación se ha instalado correctamente ejecutado en la termina el comando `python manage.py check usenager`, si todo ha salido bien devolverá `System check identified no issues (0 silenced)`, de no ser el caso verifique si el nombre escrito en la lista INSTALLED_APPS de su settings.py este correctamente escrita y coincida con el nombre `user_manager`.
+* Puede comporbar la si la aplicación se ha instalado correctamente ejecutado en la terminal el comando `python manage.py check usenager`, si todo ha salido bien devolverá `System check identified no issues (0 silenced)`, de no ser el caso verifique si el nombre escrito en la lista INSTALLED_APPS de su settings.py este correctamente escrita y coincida con el nombre `user_manager`.
 
 3. En el archvio urls.py de su proyecto Django incluya las urls de user_manager `path('user/', include('user_manager.urls')),`.
 ```python
@@ -54,14 +54,14 @@ Esta es una aplicación simple en Django para configurar un usuario completament
 Running migrations:
   Applying user_manager.0001_initial... OK
 ```
-si aún nos haz hecho las migraciones iniciales porbablemente la respuesta sea más larga, solo asegurate que `Applying user_manager.0001_initial... OK` aparezca, tambien puedes corroborar en tu base de datos si aparecen las siguientes tablas:
+Si aún no haz hecho las migraciones iniciales porbablemente la respuesta sea más larga, solo asegurate que `Applying user_manager.0001_initial... OK` aparezca, tambien puedes corroborar en tu base de datos si aparecen las siguientes tablas:
 `user_manager_customuser`
 `user_manager_customuser_groups`
 `user_manager_customuser_user_permissions`
 
-Tambien veras que en el administrador de Django `/admin/` Se a agregado una sección con el nombre de la aplicación USER_MANAGER y su modelo Custom users, y que de la sección AUTENTICACIÓN Y AUTORIZACIÓN ha desaparecido el modelu Users. 
+También verás que en el administrador de Django `/admin/` se ha agregado una sección con el nombre de la aplicación USER MANAGER y su modelo Custom users, y que de la sección AUTENTICACIÓN Y AUTORIZACIÓN ha desaparecido el modelu Users. 
 
 
 # Documentación
 
-* ##Modelos model.py
+## Modelos `models.py`
