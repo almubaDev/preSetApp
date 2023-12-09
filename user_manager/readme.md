@@ -44,7 +44,7 @@ Esta es una aplicación simple en Django para configurar un usuario completament
         EMAIL_HOST_USER = 'remitente@tuproveedor.com'
         EMAIL_HOST_PASSWORD = 'Contraseña de aplicación otorgada por tuproveedor.com'
         ```
-    * Si necesita más orientación lee el readme.md de la aplicación send_email en este mismo repositorio. [Configuración envío de emails]       (https://github.com/almubaDev/preSetApp/blob/main/send_email/readme.md)
+    * Si necesita más orientación lee el readme.md de la aplicación send_email en este mismo repositorio. [Configuración envío de emails](https://github.com/almubaDev/preSetApp/blob/main/send_email/readme.md)
 
 4. Modifica el modelo según lo que necesites, colocando los campos que estimes comvenientes, ten en cuenta que los que vienen por defecto estan diseñado sin el establecimiento de un username y para terminos técnios el username será el email del usuario. PAra más detalles lee la sección Modelo del apartado Documentación de esta lectura.
 
