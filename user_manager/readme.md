@@ -21,7 +21,7 @@ Esta es una aplicación simple en Django para configurar un usuario completament
     ]
 ```
 * ### Nota
-* Puede comporbar la si la aplicación se ha instalado correctamente ejecutado en la terminal el comando `python manage.py check usenager`, si todo ha salido bien devolverá `System check identified no issues (0 silenced)`, de no ser el caso verifique si el nombre escrito en la lista INSTALLED_APPS de su settings.py este correctamente escrita y coincida con el nombre `user_manager`.
+    * Puede comporbar la si la aplicación se ha instalado correctamente ejecutado en la terminal el comando `python manage.py check usenager`,  si todo ha salido bien devolverá `System check identified no issues (0 silenced)`, de no ser el caso verifique si el nombre escrito en la    lista INSTALLED_APPS de su settings.py este correctamente escrita y coincida con el nombre `user_manager`.
 
 3. En el archvio urls.py de su proyecto Django incluya las urls de user_manager `path('user/', include('user_manager.urls')),`.
 ```python
@@ -35,16 +35,16 @@ Esta es una aplicación simple en Django para configurar un usuario completament
     ]
 ```
 * ### Nota
-* Es importante tener configurado el envio de emails en el settings.py de tu proyecto, para así poder gestionar el reseteo de contraseñas de usuario.
-    ```python
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = 'smtp.tuproveedor.com'
-    EMAIL_PORT = 587
-    EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = 'remitente@tuproveedor.com'
-    EMAIL_HOST_PASSWORD = 'Contraseña de aplicación otorgada por tuproveedor.com'
-    ```
-* Si necesita más orientación lee el readme.md de la aplicación send_email en este mismo repositorio. [Configuración envío de emails](https://github.com/almubaDev/preSetApp/blob/main/send_email/readme.md)
+    * Es importante tener configurado el envio de emails en el settings.py de tu proyecto, para así poder gestionar el reseteo decontraseñas    de usuario.
+        ```python
+        EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+        EMAIL_HOST = 'smtp.tuproveedor.com'
+        EMAIL_PORT = 587
+        EMAIL_USE_TLS = True
+        EMAIL_HOST_USER = 'remitente@tuproveedor.com'
+        EMAIL_HOST_PASSWORD = 'Contraseña de aplicación otorgada por tuproveedor.com'
+        ```
+    * Si necesita más orientación lee el readme.md de la aplicación send_email en este mismo repositorio. [Configuración envío de emails]       (https://github.com/almubaDev/preSetApp/blob/main/send_email/readme.md)
 
 4. Modifica el modelo según lo que necesites, colocando los campos que estimes comvenientes, ten en cuenta que los que vienen por defecto estan diseñado sin el establecimiento de un username y para terminos técnios el username será el email del usuario. PAra más detalles lee la sección Modelo del apartado Documentación de esta lectura.
 
