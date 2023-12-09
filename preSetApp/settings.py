@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'send_email.apps.SendEmailConfig',
-    'home.apps.HomeConfig'
+    'home.apps.HomeConfig',
+    'user_manager.apps.UserManagerConfig',
 ]
 
 MIDDLEWARE = [
@@ -107,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-Es'
 
 TIME_ZONE = 'UTC'
 
@@ -134,3 +135,10 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('REMITENTE')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+#user config
+AUTH_USER_MODEL = 'user_manager.CustomUser'
+LOGIN_URL = 'login'
+LOGIN = 'login'
+LOGIN_REDIRECT_URL = 'user_home'
+LOGOUT_REDIRECT_URL = 'user_home'

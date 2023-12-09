@@ -26,7 +26,7 @@ La configuración esta realizada para uso con Gmail.
     EMAIL_HOST_USER = 'remitente@gmail.com'
     ```
 
-* Ingrese a [Configuracion de cuenta google](https://myaccount.google.com/)
+* Ingrese a [Configuración de cuenta google](https://myaccount.google.com/)
 
 * Ve a la sección de seguridad, cuando estés allí, en la sección de búsqueda en la esquina superior izquierda, escribe "Contraseña de aplicación", e ingresa a la opción. Para poder ingresar a la opción y que todo resulte correctamente debes tener activa la verificación de dos paso de la cuenta gmail utilizada como `EMAIL_HOST_USER` en tu settings.py.
 

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1> 🙈 Hola soy un aguacate 🥑 </h1>
+    {% if user.is_authenticated  %}
+        <h3>{{ user.full_name }}</h3>
+    {% endif %}
+    <a href="{% url 'register' %}">Crear cuenta</a>
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'logout' %}">Logout</a>
+    <a href="{% url 'password_change' %}">Cambiar Contraseña</a>
+    <a href="{% url 'password_reset' %}">Recuperar contraseña</a>
+    <h6><a href=" {% url "home" %} ">Volver</a></h6>
+{% endblock content %}
+
+
