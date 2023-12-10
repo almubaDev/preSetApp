@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Registrarse</button>
+  </form>
+  {% if errors %}
+    <div class="list_error_container">
+        <h4>Vuelva ingresar los datos</h4>
+        {% for fields, error_list in errors.items  %}
+        <p>{{error_list}}</p>
+            
+        {% endfor %}
+    </div>
+  {% endif %}
+  <h6><a href=" {% url "user_home" %}">Volver</a></h6>
+{% endblock content %}
+
+

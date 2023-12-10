@@ -1,12 +1,13 @@
 # Custom User Manager App
 
-Esta es una aplicación simple en Django para configurar un usuario completamente personalizado, incluido la relación con permisos y gurpo. Además se han creado urls y vistas personalizadas para gestionar todo el procesos en elación a un usario, registro, login, logout, cambio de contraseña y reseteo de contraseña.
+Esta es una aplicación simple en Django para configurar un usuario completamente personalizado, incluidas la relaciones con los modelos de permisos y grupos. Además, se han creado rutas y vistas personalizadas para gestionar todo el procesos en relación a la gestión de usuarios, registro, inicio de sesión, cierre de sesión, cambio de contraseña y reestablecimiento de contraseña.
+
 
 # Instrucciones de instalación e implementación
 
-1. Copie y pegue el directorio `user_manager` en el directorio raiz de su proyecto Django, como cualquier otra aplicaci+on creada en el proyecto.
+1. Copie y pegue el directorio `user_manager` en el directorio raiz de su proyecto Django, como cualquier otra aplicación creada en el proyecto.
 
-2. En su archivo settings.py de su proyecto Django,  en el apartado de aplicaciones añada 'user_manager.apps.UserManagerConfig'.
+2. En el archivo settings.py de su proyecto Django, en el apartado de aplicaciones añada 'user_manager.apps.UserManagerConfig'.
 ```python
     INSTALLED_APPS = [
         'django.contrib.admin',
@@ -21,21 +22,20 @@ Esta es una aplicación simple en Django para configurar un usuario completament
     ]
 ```
 * ### Nota
-    * Puede comporbar la si la aplicación se ha instalado correctamente ejecutado en la terminal el comando `python manage.py check usenager`,  si todo ha salido bien devolverá `System check identified no issues (0 silenced)`, de no ser el caso verifique si el nombre escrito en la    lista INSTALLED_APPS de su settings.py este correctamente escrita y coincida con el nombre `user_manager`.
+    * Puede comporbar la si la aplicación se ha instalado correctamente ejecutado en la terminal el comando `python manage.py check user_manager`, si todo ha salido bien devolverá `System check identified no issues (0 silenced)`, de no ser el caso verifique si el nombre escrito en la lista INSTALLED_APPS de su settings.py esté correctamente escrito y coincida con el nombre `user_manager.apps.UserManagerConfig`.
 
-3. En el archvio urls.py de su proyecto Django incluya las urls de user_manager `path('user/', include('user_manager.urls')),`.
+3. En el archivo urls.py de su proyecto Django incluya las urls de user_manager `path('user/', include('user_manager.urls')),`.
 ```python
     from django.contrib import admin
     from django.urls import path, include   
 
     urlpatterns = [
         path('admin/', admin.site.urls),
-        path('', include('home.urls')),
         path('user/', include('user_manager.urls')), #Incluirá las urls de la aplicación user_manager, a partir de del path "user/".
     ]
 ```
 * ### Nota
-    * Es importante tener configurado el envio de emails en el settings.py de tu proyecto, para así poder gestionar el reseteo decontraseñas    de usuario.
+    * Es importante tener configurado el envío de emails en el archivo settings.py de tu proyecto, para así poder gestionar el reseteo decontraseñas de usuario.
         ```python
         EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
         EMAIL_HOST = 'smtp.tuproveedor.com'
@@ -46,7 +46,7 @@ Esta es una aplicación simple en Django para configurar un usuario completament
         ```
     * Si necesita más orientación lee el readme.md de la aplicación send_email en este mismo repositorio. [Configuración envío de emails](https://github.com/almubaDev/preSetApp/blob/main/send_email/readme.md)
 
-4. Modifica el modelo según lo que necesites, colocando los campos que estimes comvenientes, ten en cuenta que los que vienen por defecto estan diseñado sin el establecimiento de un username y para terminos técnios el username será el email del usuario. PAra más detalles lee la sección Modelo del apartado Documentación de esta lectura.
+4. Modifica los modelos en models.py según lo que necesites, colocando los campos que estimes convenientes, ten en cuenta que los campos que vienen estan diseñados sin el establecimiento de un campo username y para términos técnios el username será el email del usuario. Para más detalles lee la sección Modelo del apartado Documentación de esta lectura.
 
 5. Ejecuta en la terminal el comando `python manage.py migrate`. Si todo ha salido bien ha de mostrar en consola el siguiente mensaje:
 ```Operations to perform:
@@ -54,12 +54,12 @@ Esta es una aplicación simple en Django para configurar un usuario completament
 Running migrations:
   Applying user_manager.0001_initial... OK
 ```
-Si aún no haz hecho las migraciones iniciales porbablemente la respuesta sea más larga, solo asegurate que `Applying user_manager.0001_initial... OK` aparezca, tambien puedes corroborar en tu base de datos si aparecen las siguientes tablas:
+Si aún no haz hecho las migraciones iniciales probablemente la respuesta sea más larga, solo asegurate que `Applying user_manager.0001_initial... OK` aparezca, también puedes corroborar en tu base de datos si aparecen las siguientes tablas:
 `user_manager_customuser`
 `user_manager_customuser_groups`
 `user_manager_customuser_user_permissions`
 
-También verás que en el administrador de Django `/admin/` se ha agregado una sección con el nombre de la aplicación USER MANAGER y su modelo Custom users, y que de la sección AUTENTICACIÓN Y AUTORIZACIÓN ha desaparecido el modelu Users. 
+También verás que en el administrador de Django `/admin/` se ha agregado una sección con el nombre de la aplicación USER MANAGER y su modelo Custom users, y que de la sección AUTENTICACIÓN Y AUTORIZACIÓN ha desaparecido el modelo Users. 
 
 
 # Documentación
@@ -76,31 +76,31 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
     if not email:
         raise ValueError('El campo "email" es obligatorio.')
 ```
-* La función create_user debe recibir como argumentos un email, una password que se configurará como None por defecto en caso de no asignar una, se debe tener en cuenta que la contraseña será exigida igualmente, ya que no permitirá el campo vacío o que no se cumplan los parametros básico de extención y formato, alo anterior se suma una cantidad indeterminada de campos (**Kwargs formato disccionario) que se deseen añadir, también se condiciona el ingreso de un email, al no hacerlo se levantará una excepción.
+* La función create_user debe recibir como argumentos un email, una password que se configurará como None por defecto en caso de no asignar una, se debe tener en cuenta que la contraseña será exigida igualmente, ya que no permitirá el campo vacío o que no se cumplan los parametros básico de extención y formato, a lo anterior se suma una cantidad indeterminada de campos (**Kwargs formato diccionario) que se deseen añadir, también se condiciona el ingreso de un email, al no hacerlo se levantará una excepción.
 
 
 ```python
     email = self.normalize_email(email)
 ```
-* La normalización del email campo Asegura que esté en un formato estandarizado, garantizando la unifromidad en la base de datos. 
+* La normalización del campo email asegura que esté en un formato estandarizado, garantizando la unifromidad en la base de datos. 
 
 
 ```python
     user = self.model(email=email, **extra_fields)
 ```
-*Crea una instancia del modelo usuario con su respectivo email y campos personalizados, sin el password ya que este necesita un paso previo antes de ser integrada a la instancia.
+* Crea una instancia del modelo usuario con su respectivo email y campos personalizados, sin el password ya que este necesita un paso previo antes de ser integrada a la instancia.
 
 
 ```python
     user.set_password(password)
 ```
-*El método cifra y almacena la contraseña de forma segura.
+* El método cifra y almacena la contraseña de forma segura.
 
 
 ```python
     user.save(using=self._db)
 ```
-*Conecta a la base de datos y guarda la instancia de usuario que se ha creado.
+* Conecta a la base de datos y guarda la instancia de usuario que se ha creado.
 
 
 ```python
@@ -112,7 +112,7 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
 ```python
     def create_superuser(self, email, password=None, **extra_fields):
 ```
-* La función crea un súper usuario siguiendo la misma lógica de parametros que  `create_user`.
+* La función crea un súper usuario siguiendo la misma lógica de parametros que `create_user`.
 
 
 ```python
@@ -134,7 +134,7 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
 ```python
     return self.create_user(email, password, **extra_fields)
 ```
-* De cumplirse todos los requemientos, la función retornará un usuario con los permisos necesarios, para crear el usuario hará uso de la función `create_user`definida previamente. 
+* De cumplirse todos los requerimientos, la función retornará un usuario con los permisos necesarios, para crearlo hará uso de la función `create_user`definida previamente. 
 
 
 ```python
@@ -160,11 +160,11 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
         related_name='custom_users_permissions'  # Elige un nombre personalizado
     )
 ```
-* El atributo `groups` `user_permissions` y  crea una relación de muchos a mucho con el modelo Group o Permission propios de Django, entendiendo que un usuario puede pertenecer a multiples grupos o poseer diversos permiso, como también que cada grupo o permiso puede integrar muchos usuarios.
-* `Group` o `Permission` permite que mediante el nombre del objeto relacionado Group accede al usuarios pertenecientes a él, `Group.custom_users_groups.all()` o `Permission.custom_users_permissions`.   
+* Los atributo `groups` y `user_permissions` crean una relación de muchos a muchos con el modelo Group o Permission propios de Django, entendiendo que un usuario puede pertenecer a multiples grupos o poseer diversos permiso, como también que cada grupo o permiso puede integrar muchos usuarios.
+* `Group` o `Permission` permite que mediante el nombre del objeto relacionado Group accede al usuarios pertenecientes a él, `Group.custom_users_groups.all()` o `Permission.custom_users_permissions.all()`.   
 * `verbose_name` es un atributo opcional que proprociona una etiqueta descriptiva al campo.
 * `blank=True` Indica y permite que el campo pueda estar en blanco en los formularios de creación del usuario personalizado, en este contexto indica que el usuario puede pertener a cero o más grupos.
-* `help_text` Proporciona un mensaje de ayuda ha mostarse en los formularios, indica a que refiere el campo las condiciones que ha de tener para cumplimentarlo a cabalidad.
+* `help_text` Proporciona un mensaje de ayuda ha mostarse en los formularios, indica a que refiere el campo y las condiciones que ha de tener para cumplimentarlo a cabalidad.
 * `related_name` Proporciona un nombre personalizado para la relación inversa del modelo.
 
 
@@ -176,29 +176,29 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
 ```
-* Los campos requeridos para crear un usuario, por tanto, la información que solicitaremos y almacenaremos en la base de datos. 
-* `is_active` permite activar o desactivar a un usuario dentro de nuestra aplicación si necesidad de eliminarlo de la base de datos, por tanto conservará los datos relacionados a su cuenta en caso de quere volver a activarse.
+* Los campos requeridos para crear un usuario, por tanto, la información que solicitaremos y almacenaremos en la base de datos. Es aquí donde debe crear los campos según sus necesidades.
+* `is_active` permite activar o desactivar a un usuario dentro de nuestra aplicación si la necesidad de eliminarlo de la base de datos, por tanto se conservarán los datos relacionados a su cuenta en caso de querer volver a activarse.
 * `is_staff` permite darle un grado mayor de permisos a la instancia del usuario en particular, pudiendo acceder a la consola de administación entre otros.
-* ` date_joined` alamcena la fecha de creación del usuario. El atributo `auto_now_add=True` establece la hora y la fecha actual en el momento en que se crea el usuario de forma automática, por tanto, este campo no debe ser cumplimentado desde el formulario de creación de usuario. 
+* ` date_joined` almacena la fecha de creación del usuario. El atributo `auto_now_add=True` establece la hora y la fecha actual del momento en que se crea el usuario de forma automática, por tanto, este campo no debe ser cumplimentado desde el formulario de creación de usuario. 
 
 
 ```python
     objects = CustomUserManager()
 ```
-* Proporsion un gestor personalizado al modelo usuario, en este caso lo hará mediante la asignación la clase `CustomUserManager` que hemos configurado al principio, la cuál de fine cómo se gestionan los usuarios. 
+* Proporsiona un gestor personalizado al modelo usuario, en este caso lo hará mediante la asignación la clase `CustomUserManager` que hemos configurado al principio del archivo, la cuál define cómo se gestionan los usuarios. 
 
 
 
 ```python
     USERNAME_FIELD = 'email'
 ```
-* Especifica que se usara el campo de email como nombre de usuario al acceder al modelo usuario, un ejemplo practico es que podrá iniciar sesión con el email y la contraseña. 
+* Especifica que se usará el campo de email como `username` al acceder al modelo usuario, un ejemplo práctico es que podrá iniciar sesión con el email y la contraseña. 
 
 
 ```python
     REQUIRED_FIELDS = []
 ```
-* La lista vacía indca que no requiere de ningún campo adicional para la creación de un usario más allá del email y password. Esto no evita que gestionemos la logica necesaria en nuestros campos, vistas o formularios para exigir al usuario el ingreso del resto de los datos referente los campos.
+* La lista vacía indica que no requiere de ningún campo adicional para la creación de un usario más allá del email y el password. Esto no evita que gestionemos la logica necesaria en nuestros campos, vistas o formularios para exigir al usuario el ingreso del resto de los datos referente los campos personalizados.
 
 
 ```python
@@ -206,14 +206,124 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
         return self.email
 
 ```
-* El metodo devuelve una el email del usuario como representación del objeto, haciendolo más legible en impresión por consola o su visulización en el administrador de Django.
+* El metodo devuelve una el email del usuario como representación del objeto, haciendolo más legible en la impresión por consola o su visulización en el administrador de Django.
+
+
+
+## Fromularios `forms.py
+```python
+    class CustomUserCreationForm(UserCreationForm):
+```
+```python
+    class CustomUserLoginForm(AuthenticationForm):
+```
+```python
+    class CustomChangePasswordForm(PasswordChangeForm):
+```
+```python
+    class CustomChangePasswordForm(PasswordChangeForm):
+```
+* Se han creado cuatro fomularios personalizados para recibir información por parte del usuario y almacernarla en la base de datos, todos heredan de los formularios originales de la gestión de usuario, como las funciones son Crear usuario, Iniciar sesión, Solicitar el cambio de contraseña, Modificar contraseña.
+
+```python
+    class Meta:
+        model: CustomUser
+        fields = ('campo1', 'campo2')
+```
+* La clase Meta se estable como modelo al cual se relaciona el formulario `CustomUser`, lo que permite trabajar con el usuario personalizado, fields lista los campos requeridos para cumplir la función especifica de cada formulario. 
+
+`
+## Vistas `views.py`
+
+```python
+    def register(request):
+```
+*Renderiza  mediante el metodo GET el template con el fomrulario `CustomUserLoginForm`. Mediante el metodo POST recibe los datos entregados por el usuario mediante el formulario `CustomUserLoginForm`, valida los datos y los registra en la base de datos, adicionalmente crea una sessión de login con los datos del usuario recién registrado. Además, redirige a la vista que se haya configurado. De existir un problema rederizará el template con el fomulario de registro para repetir la operación e indicando los errores posibles.
 
 
 ```python
+    CustomUserLoginView(LoginView):
+        template_name = 'login.html'  
+        form_class = CustomUserLoginForm
 ```
+*Permite iniciar sesión al usuario, se ha personalizado el template que renderiza la vista y el formulario a mostrar.
+
+
 ```python
+    @method_decorator(login_required, name='dispatch' )
 ```
+* `@method_decorator` permite aplicar el decorador `login_required` al metodo 'dispatch', este último es parte del ciclo de vida de la vista, a fin de proteger la vista de quienes no hayan iniciado sesión de usuario.
+
+
 ```python
+    class CustomPasswordChangeView(PasswordChangeView):
+        template_name = 'change_password.html'
+        form_class = CustomChangePasswordForm
 ```
+* La vista renderiza el tempalte con el fomulario necesario para realizar el cambio de contraseña, solicita la contraseña actual, la nueva y repetir esta última.
+
+
 ```python
+    class CustomPasswordChangeDoneView(PasswordChangeDoneView):
+        def get(self, *args, **kwargs):
+            return redirect('logout')
 ```
+* La vista redirige a una vista y template determinada una vez realizado el cambio de contraseña. En este caso cierra la sesión del usuario y es redirigido a la pagina principal para que inicie sesión con la nueva contraseña.
+
+
+```python
+    class CustomPasswordResetView(PasswordResetView):
+```
+* La vista se encagar de solicitar el email del usuario y enviar un corro con las instrucciones para reestablecer su contraseña.
+
+
+```python
+    class CustomPasswordResetDoneView(PasswordResetDoneView):
+```
+* La vista muestra un mensaje confirmando el envío de un correo electrónico con las instrucciones para cambiar la contraseña. 
+
+
+```python
+    class CustomPasswordResetConfirmView(PasswordResetConfirmView)
+```
+* La vista permite acceder al formulario por defecto para ingresar una nueva contraseña, la conexión se crea a traves de un token de seguridad, por tanto, el enlace proporcionado en el correo solo funcionará una vez. Si el token ha caducado se mostrara un mensaje explicando la situación, y debe repetir el proceso para el reestablecimiento de contraseña.
+
+
+```python
+    class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+```
+* La vista se encarga de rendirizar un template con un mensaje indicando que el reestablecimiento de contraseña ha sido existos, acompañado de un link a la vista de login. 
+
+
+
+## Rutas `urls.py`
+
+* Se ecneuntra las urls a todas las vistas que se han personalizado
+
+## Configuracioón general `settings.py`
+
+```python
+    AUTH_USER_MODEL = 'user_manager.CustomUser'
+```
+* Determina el modelo que se ocupará para autenticarse en la aplicación como usario.
+
+
+```python
+    LOGIN_URL = 'login'
+```
+* Indica la ruta de `login`, se utiliza para redirigir a esta vista cuando se intenta acceder a una ruta protegida.
+
+
+```python
+    LOGIN = 'login'
+```
+* Determina que `login` es la vista determinada para realizar el inicio de sesión.
+
+```python
+    LOGIN_REDIRECT_URL = 'user_home'
+    LOGOUT_REDIRECT_URL = 'user_home'
+```
+* Configura la ruta a la cual se redirigirá una vez se haya iniciado o cerrado sesión.
+
+### Nota 
+* La carpeta tmplts tiene los templates a modo de ejemplos, configura según tus necesidades.

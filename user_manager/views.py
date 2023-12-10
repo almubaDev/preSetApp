@@ -1,4 +1,4 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -40,7 +40,7 @@ class CustomPasswordChangeView(PasswordChangeView):
 @method_decorator(login_required, name='dispatch' )
 class CustomPasswordChangeDoneView(PasswordChangeDoneView):
     def get(self, *args, **kwargs):
-        return redirect('login')
+        return redirect('logout')
 
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'password_reset.html'
@@ -52,6 +52,5 @@ class CustomPasswordResetDoneView(PasswordResetDoneView):
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'password_reset_confirm.html'
    
-
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'password_reset_completed.html'
