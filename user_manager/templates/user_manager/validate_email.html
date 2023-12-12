@@ -1,0 +1,28 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+{% autoescape off %}
+<h2>Hola {{ fullname }}</h2>
+<h3>Hemos recibido una solicitud para registrarte en {{ site_name }}.</h3>
+
+<p>Por favor, haz clic en el siguiente enlace para completar tu registro</p>
+<a href="{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}">Validar email</a>
+{% comment %} {{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %} {% endcomment %}
+
+<p>Si no te haz registrado en nuestra web ignora este mensaje.</p>
+
+<p>Gracias.</p>
+<p>El equipo de {{ site_name }}</p>
+
+
+{% endautoescape %}
+
+</body>
+</html>

@@ -24,7 +24,7 @@ Esta es una aplicación simple en Django para configurar un usuario completament
 * ### Nota
     * Puede comporbar la si la aplicación se ha instalado correctamente ejecutado en la terminal el comando `python manage.py check user_manager`, si todo ha salido bien devolverá `System check identified no issues (0 silenced)`, de no ser el caso verifique si el nombre escrito en la lista INSTALLED_APPS de su settings.py esté correctamente escrito y coincida con el nombre `user_manager.apps.UserManagerConfig`.
 
-3. En el archivo urls.py de su proyecto Django incluya las urls de user_manager `path('user/', include('user_manager.urls')),`.
+3. En el archivo urls.py de su proyecto Django incluya las urls de user_manager `path('user/', include('user_manager.urls')),`
 ```python
     from django.contrib import admin
     from django.urls import path, include   
@@ -69,7 +69,7 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
 ```python
     class CustomUserManager(BaseUserManager):
 ```
-* BaseUserMAnager es una clase base proporcioada por Django para la gestión de usuarios, y extendemos sus funcionalidades a nuesta clase personalizada CustomUserManager.
+* `BaseUserMAnager` es una clase base proporcioada por Django para la gestión de usuarios, y extendemos sus funcionalidades a nuesta clase personalizada `CustomUserManager`.
 
 
 ```python
@@ -119,7 +119,7 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
     extra_fields.setdefault('is_superuser', True)
     extra_fields.setdefault('is_staff', True)
 ```
-*Se crean y configuran por defecto los atributos `is_superuser` e `is_staff` en `True`.
+* Se crean y configuran por defecto los atributos `is_superuser` e `is_staff` en `True`.
 
 
 ```python
@@ -134,7 +134,7 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
 ```python
     return self.create_user(email, password, **extra_fields)
 ```
-* De cumplirse todos los requerimientos, la función retornará un usuario con los permisos necesarios, para crearlo hará uso de la función `create_user`definida previamente. 
+* De cumplirse todos los requerimientos, la función retornará un usuario con los permisos necesarios, para crearlo hará uso de la función `create_user` definida previamente. 
 
 
 ```python
@@ -210,7 +210,7 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
 
 
 
-## Fromularios `forms.py
+## Formularios `forms.py
 ```python
     class CustomUserCreationForm(UserCreationForm):
 ```
@@ -238,7 +238,7 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
 ```python
     def register(request):
 ```
-*Renderiza  mediante el metodo GET el template con el fomrulario `CustomUserLoginForm`. Mediante el metodo POST recibe los datos entregados por el usuario mediante el formulario `CustomUserLoginForm`, valida los datos y los registra en la base de datos, adicionalmente crea una sessión de login con los datos del usuario recién registrado. Además, redirige a la vista que se haya configurado. De existir un problema rederizará el template con el fomulario de registro para repetir la operación e indicando los errores posibles.
+* Renderiza  mediante el metodo GET el template con el fomrulario `CustomUserLoginForm`. Mediante el metodo POST recibe los datos entregados por el usuario mediante el formulario `CustomUserLoginForm`, valida los datos y los registra en la base de datos, adicionalmente crea una sessión de login con los datos del usuario recién registrado. Además, redirige a la vista que se haya configurado. De existir un problema rederizará el template con el fomulario de registro para repetir la operación e indicando los errores posibles.
 
 
 ```python
@@ -246,7 +246,7 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
         template_name = 'login.html'  
         form_class = CustomUserLoginForm
 ```
-*Permite iniciar sesión al usuario, se ha personalizado el template que renderiza la vista y el formulario a mostrar.
+* Permite iniciar sesión al usuario, se ha personalizado el template que renderiza la vista y el formulario a mostrar.
 
 
 ```python
@@ -272,9 +272,107 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
 
 
 ```python
-    class CustomPasswordResetView(PasswordResetView):
+    def password_reset_request(request):
 ```
-* La vista se encagar de solicitar el email del usuario y enviar un corro con las instrucciones para reestablecer su contraseña.
+*  La vista se encaga de solicitar el email del usuario y enviar un correo con las instrucciones para reestablecer su contraseña.
+    
+    ```python
+         if request.method == 'POST':
+    ```
+    * Verifica si la solicitud utilza el método `POST`, indicando que se está recibiendo información por parte del cliente y que se deben realizar acciones con los datos enviados.
+
+    ```python
+        password_form = PasswordResetForm(request.POST)
+    ```
+    * Crea un formulario con los datos enviados por el cliente.
+    
+    ```python
+        if password_form.is_valid():
+    ```
+    * Verifica si el formulario es valido.
+
+    ```python
+        data = password_form.cleaned_data['email']
+    ```
+    * Obtiene el email ingresado en el formulario.
+
+    ```python
+        user_email = CustomUser.objects.filter(Q(email=data))
+    ```
+    * Busca y filtra desde la base de datos aquellos usuarios que tengan el email proporcionado en el formulario.
+
+    ```python
+        if user_email.exists():
+    ```
+    * Condiciona si exite un usuario con dicho corro electrónico, de exisitr, se ejecutara la lógica para enviar el email para el reestablecimiento de contraseña.
+    
+    ```python
+        for user in user_email:
+    ```
+    * Itera sobre los usuarios encontrados con el filtro por email, nuestro modelo establese el campo como único, por tanto siempre debiese haber un email diferente por usuario. Pero el bucle puede servirte como ejemplo para otro tipos de lógica.
+
+    ```python
+        subject = "Reestablecimiento de contraseña"
+    ```
+    * Establece el asunto que se mostrará en nuestro email a enviar.
+
+    ```python
+        email_template_name = 'user_manager/password_reset_message.html'
+    ```
+    * Establece la plantilla `html` o `txt` que conformarán el cuerpo de nuestro email de reestablecimiento de contraseña.
+
+    ```python
+        parameters = {
+            'site_name': 'Preset web App',
+            'email': user_email,
+            'protocol': 'http',
+            'domain': '127.0.0.1:8000',
+            'uid': urlsafe_base64_encode(force_bytes(uspk)),
+            'token': default_token_generator.make_to(user),
+            'fullname': user.full_name
+        }
+    ```
+    * Declara los parametros que se utilizarán en la platilla para el correo electrónico, su contexto, `site_name` el nombre de nuestro sitio con el que nos identificaremos en el correo enviado, `fullname` el nombre de nuestro usuario para individualizarlo, `email` establece la dirección de correo electrónico del destinatario. Las siguientes claves permitirán construir el enlace para que el usuario pueda reestablecer la contraseña, `protocol`, es el protocolo que utilizataremos en nustra url, `domain` el dominio de nuestra aplicación en este caso `localhost`, `uid` representa el `id` del usuario con el cual estamos trabajando y quien a solicitado el reestablecimiento de contraseña, `urlsafe_base64_encode` toma una secuencia de bytes y la codifica en una versión segura para ser utilizada en una url,  `force_bytes` fuerza la conversión del id obtenido en una cadena de bytes para poder trabajar con ella, `user.pk` representa al id del usuario destinatario; `token` alamacena un token de identificación generado por `default_token_generator.make_token(user)` permitiendo un grado mayor de seguridad, de identificación y con expiración una vez utilizado el enlace.
+
+    ```python
+        <a href="{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}">Reestablecer contraseña</a>
+    
+    ```
+    * Ejemplo del link que se debe generar en el template del correo electrónico con los datos antes mencionados
+
+    ```python
+        email_content = render_to_string(email_template_name, parameters)
+    ```
+    * Renderiza el contenido html en el email, se le envia como parametro el template y su contexto a utilizar.
+
+    ```python
+          email= EmailMessage(
+                            subject=subject,
+                            body=email_content,
+                            to=[user.email]
+                        )
+    ```
+    * Crea una instancia de `EmailMessage` entregando como argumento a su constructor el asunto, el cuerpo y destinarario.
+
+    ```python
+        try:
+            email.send(fail_silently=False)
+        except:
+            return HttpResponse('Invalid Header')
+        return redirect('password_reset_done') 
+    ```
+    * Intentaremos enviar nuestro email, por defecto email.send() no levanta ningún tipo de excepción ante fallos, con el parametro `fail_silently=False` hacemos que levante una excepción en caso de algun error,  de no poder enviar el email se generará una respuesta http con un mensaje. Finalmente, si ha salido todo bien y el email ha sido enviado. redireccionará a la vista `password_reset_done`.
+
+    ```python
+         else:
+         password_form = PasswordResetForm()
+
+         context = {
+             'password_form': password_form
+         }
+         return render(request,'user_manager/password_resethtml',   context)
+    ```
+    * En caso de que la petición no sea con el metodo `POST` se renderizará `user_manager/password_reset.html` con el formulario de reestablecimiento de contraseña en su contexto.
 
 
 ```python
@@ -300,7 +398,8 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
 
 * Se ecneuntra las urls a todas las vistas que se han personalizado
 
-## Configuracioón general `settings.py`
+## Configuración general 
+### `settings.py`
 
 ```python
     AUTH_USER_MODEL = 'user_manager.CustomUser'
@@ -325,5 +424,78 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
 ```
 * Configura la ruta a la cual se redirigirá una vez se haya iniciado o cerrado sesión.
 
+
+* ### `apps.py`
+
+* Se ha agregado la variable `verbose_name` en la clase `class UserManagerConfig(AppConfig)` para dar un aspecto más homogéneo en el panel de administación de Django.
+
+* ### `admin.py`
+```python
+    admin.site.site_header = 'PRESET WEB APPS'
+    admin.site.site_title =  'preset web apps'
+    admin.site.index_title = 'Panel de administración'
+
+```
+* Establece títulos personalizados para el panel de administración de Django.
+
+
+```python
+    class CustomUserAdmin(UserAdmin):
+```
+* Define una nueva clase llamada CustomUserAdmin que hereda de la clase UserAdmin. Esto extiende y personaliza la funcionalidad proporcionada por el administrador de usuarios predeterminado de Django.
+
+
+```python
+    list_display = ('email', 'full_name', 'is_active', 'is_staff')
+```
+* Especifica qué campos se deben mostrar en la lista de usuarios en la interfaz de administración.
+
+
+```python
+    search_fields = ('email', 'full_name')
+```
+* Especifica los campos por los cuales se puede realizar una búsqueda en la interfaz de administración.
+
+
+```python
+    readonly_fields = ('date_joined',)
+```
+* Indica que el campo date_joined (fecha de registro) es de solo lectura en la interfaz de administración.
+
+
+```python
+    ordering = ['email']
+```
+*
+
+
+```python
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ('full_name', 'country')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'groups', 'user_permissions'), 'classes': ('collapse',)}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+    )
+```
+* Define los conjuntos de campos que se mostrarán y cómo se organizarán en la interfaz de administración al ver/editar un usuario.
+
+
+```python
+    add_fieldsets = (
+    (None, {
+        'classes': ('wide',),
+        'fields': ('email', 'password1', 'password2', 'full_name', 'country', 'is_active', 'is_staff')}
+        ),
+    )
+```
+* Define los conjuntos de campos que se mostrarán y cómo se organizarán en la interfaz de administración al agregar un nuevo usuario.
+
+
+```python
+    admin.site.register(CustomUser, CustomUserAdmin)
+```
+*Registra el modelo CustomUser y el administrador personalizado CustomUserAdmin en el sitio de administración de Django.
+
+
 ### Nota 
-* La carpeta tmplts tiene los templates a modo de ejemplos, configura según tus necesidades.
+* La carpeta `templates/user_manager` tiene los templates a modo de ejemplos, modificalos según tus necesidades.

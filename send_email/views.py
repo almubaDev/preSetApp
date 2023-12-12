@@ -15,5 +15,5 @@ def send_email(request):
         send_mail(asunto, informacion, remitente, [destinatario])
         return redirect('send_email')
 
-    return render(request, 'send_email.html')
+    return render(request, 'send_email/send_email.html')
 
