@@ -365,7 +365,7 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
 
     ```python
          else:
-         password_form = PasswordResetForm()
+            password_form = PasswordResetForm()
 
          context = {
              'password_form': password_form
@@ -494,7 +494,7 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
 ```python
     admin.site.register(CustomUser, CustomUserAdmin)
 ```
-*Registra el modelo CustomUser y el administrador personalizado CustomUserAdmin en el sitio de administración de Django.
+* Registra el modelo CustomUser y el administrador personalizado CustomUserAdmin en el sitio de administración de Django.
 
 
 ### Nota 
