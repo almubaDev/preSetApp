@@ -6,6 +6,7 @@ Esta es una aplicación simple en Django para enviar correos electrónicos utili
 >[!NOTA]
     La configuración esta realizada para uso con Gmail.
 
+
 # Instrucciones
 
 1. Clone el repositorio o descarge la carpeta send_email.
@@ -57,14 +58,14 @@ Esta es una aplicación simple en Django para enviar correos electrónicos utili
         return render(request, 'send_email.html') 
  ```
 >[!CAUTION]
-    ## Sobre la seguridad de tus datos y credenciales
-    * Si llevarás tu proyecto a producción o lo compartiras con terceros recuerda nunca colocar tus credenciales en el código, utiliza variables de entorno para mantener la privacidad de tus credenciales.
+    Sobre la seguridad de tus datos y credenciales. Si llevarás tu proyecto a producción o lo compartiras con terceros recuerda nunca colocar tus credenciales en el código, utiliza variables de entorno para mantener la privacidad de tus credenciales.
 
-* ### Sugerencia de uso de dotenv para manejar tus variables de entorno
+>[!TIP]
+    Sugerencia de uso de dotenv para manejar tus variables de entorno
 
-* Desde la terminal ejecuta `pip install python-dotenv`.
+    * Desde la terminal ejecuta `pip install python-dotenv`.
 
-* Crea un archivo en la raiz de tu proyecto, a la altura del manage.py y nombralo ".env", dentro del escribiras tus variables de entorno siguiendo este ejemplo:
+    * Crea un archivo en la raiz de tu proyecto, a la altura del manage.py y nombralo ".env", dentro del escribiras tus variables de entorno siguiendo este ejemplo:
  ```python
     #Django
     SECRET_KEY=llave que se encuentra en tu setting.py con el mismo nombre de variable.
@@ -77,24 +78,24 @@ Esta es una aplicación simple en Django para enviar correos electrónicos utili
     DESTINATARIO=destinatario@gmail.com
     REMITENTE=remitente@gmail.com  
  ```
-* Recueda los valores en las variables se escriben sin comillas, incluso si el valor a almacenar es una cadena., y tanto el nombre de la varable, el signo = y el valor se escribe sin espacios entre ellos.
-
-* Luego, en los archivos.py que necesite importar las variables añade lo siguiente:
- ```python
-    from dotenv import load_dotenv
-    import os
-    load_dotenv()
- ```
-*El código en tus archivos.py donde hará uso de las variables de entorno debe verse así:
- ```python
-    #settings.py
-    EMAIL_HOST_USER = os.getenv('REMITENTE')
-    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-    #views.py
-    destinatario = os.getenv('DESTINATARIO') #Ej: correodeldestinatario@gmail.com
-    remitente = os.getenv('REMITENTE') #Ej: micorreo@gmail.com
- ```
-
+    * Recueda los valores en las variables se escriben sin comillas, incluso si el valor a almacenar es una cadena., y tanto el nombre  de la varable, el signo = y el valor se escribe sin espacios entre ellos.
+    
+    * Luego, en los archivos.py que necesite importar las variables añade lo siguiente:
+     ```python
+        from dotenv import load_dotenv
+        import os
+        load_dotenv()
+     ```
+    *El código en tus archivos.py donde hará uso de las variables de entorno debe verse así:
+     ```python
+        #settings.py
+        EMAIL_HOST_USER = os.getenv('REMITENTE')
+        EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+        #views.py
+        destinatario = os.getenv('DESTINATARIO') #Ej: correodeldestinatario@gmail.com
+        remitente = os.getenv('REMITENTE') #Ej: micorreo@gmail.com
+     ```
+    
  * Asegurate de crear tu archivo .gitignore y añadir .env en él. 
  
 ## Contribución
