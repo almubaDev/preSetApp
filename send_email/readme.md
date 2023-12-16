@@ -23,7 +23,7 @@ Esta es una aplicación simple en Django para enviar correos electrónicos utili
     ```
 
 >[!TIP]
-    ### Para obtener la contraseña de aplicación
+    Para obtener la contraseña de aplicación
  * Inicie sesión en su cuenta gmail, la cuenta debe coincidir con su mail configurado en la variable `EMAIL_HOST_USER` settin.py.
      ```python
      EMAIL_HOST_USER = 'remitente@gmail.com'
