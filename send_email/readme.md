@@ -2,9 +2,9 @@
 
 Esta es una aplicación simple en Django para enviar correos electrónicos utilizando la funcionalidad incorporada de en el framework para el envío de emails. 
 
-### Nota
 
-La configuración esta realizada para uso con Gmail.
+>[!NOTA]
+    La configuración esta realizada para uso con Gmail.
 
 # Instrucciones
 
@@ -20,26 +20,28 @@ La configuración esta realizada para uso con Gmail.
     EMAIL_HOST_USER = 'remitente@gmail.com'
     EMAIL_HOST_PASSWORD = 'Contraseña de aplicación otorgada por google'
     ```
-### Para obtener la contraseña de aplicación
-* Inicie sesión en su cuenta gmail, la cuenta debe coincidir con su mail configurado en la variable `EMAIL_HOST_USER` setting.py.
-    ```python
-    EMAIL_HOST_USER = 'remitente@gmail.com'
-    ```
 
-* Ingrese a [Configuración de cuenta google](https://myaccount.google.com/)
+>[!TIP]
+    ### Para obtener la contraseña de aplicación
+    * Inicie sesión en su cuenta gmail, la cuenta debe coincidir con su mail configurado en la variable `EMAIL_HOST_USER` setting.py.
+        ```python
+        EMAIL_HOST_USER = 'remitente@gmail.com'
+        ```
 
-* Ve a la sección de seguridad, cuando estés allí, en la sección de búsqueda en la esquina superior izquierda, escribe "Contraseña de aplicación", e ingresa a la opción. Para poder ingresar a la opción y que todo resulte correctamente debes tener activa la verificación de dos paso de la cuenta gmail utilizada como `EMAIL_HOST_USER` en tu settings.py.
+    * Ingrese a [Configuración de cuenta google](https://myaccount.google.com/)
 
-* Te pedirá ingresar la contraseña de tu cuenta.
-    
-* Cree un app name haciendo referencia a tu aplicación Django. haz click en crear.
+    * Ve a la sección de seguridad, cuando estés allí, en la sección de búsqueda en la esquina superior izquierda, escribe "Contraseña  de aplicación", e ingresa a la opción. Para poder ingresar a la opción y que todo resulte correctamente debes tener activa la    verificación de dos paso de la cuenta gmail utilizada como `EMAIL_HOST_USER` en tu settings.py.
 
-* Aparecerá un cuadro de diálogo con su contraseña de aplicación. copiela y de click en hecho.
+    * Te pedirá ingresar la contraseña de tu cuenta.
 
-* Pegue la contraseña brindadac en la variable `EMAIL_HOST_PASSWORD`configurada en settings.py reemplazando el valor de la variable por su contraseña de aplicación generada.
-    ```python
-    EMAIL_HOST_PASSWORD = 'Contraseña de aplicación otorgada por google'
-    ```
+    * Cree un app name haciendo referencia a tu aplicación Django. haz click en crear.
+
+    * Aparecerá un cuadro de diálogo con su contraseña de aplicación. copiela y de click en hecho.
+
+    * Pegue la contraseña brindadac en la variable `EMAIL_HOST_PASSWORD`configurada en settings.py reemplazando el valor de la  variable por su contraseña de aplicación generada.
+        ```python
+        EMAIL_HOST_PASSWORD = 'Contraseña de aplicación otorgada por google'
+        ```
 
 5. Configure el views.py de acuerdo a sus necesidades reemplazando los campos de las variables y generando la lógica necesaria.
  ```python
@@ -54,8 +56,9 @@ La configuración esta realizada para uso con Gmail.
 
         return render(request, 'send_email.html') 
  ```
-## Sobre la seguridad de tus datos y credenciales
-* Si llevarás tu proyecto a producción o lo compartiras con terceros recuerda nunca colocar tus credenciales en el código, utiliza variables de entorno para mantener la privacidad de tus credenciales.
+>[!CAUTION]
+    ## Sobre la seguridad de tus datos y credenciales
+    * Si llevarás tu proyecto a producción o lo compartiras con terceros recuerda nunca colocar tus credenciales en el código, utiliza variables de entorno para mantener la privacidad de tus credenciales.
 
 * ### Sugerencia de uso de dotenv para manejar tus variables de entorno
 
