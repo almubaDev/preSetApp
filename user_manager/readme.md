@@ -498,4 +498,4 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
 
 
 >[!NOTE]
-* La carpeta `templates/user_manager` tiene los templates a modo de ejemplos, modificalos según tus necesidades.
+    * La carpeta `templates/user_manager` tiene los templates a modo de ejemplos, modificalos según tus necesidades.
