@@ -21,7 +21,7 @@ Esta es una aplicación simple en Django para configurar un usuario completament
         'user_manager.apps.UserManagerConfig', #Como en este ejemplo
     ]
 ```
-* ### Nota
+>[!NOTE]
     * Puede comporbar la si la aplicación se ha instalado correctamente ejecutado en la terminal el comando `python manage.py check user_manager`, si todo ha salido bien devolverá `System check identified no issues (0 silenced)`, de no ser el caso verifique si el nombre escrito en la lista INSTALLED_APPS de su settings.py esté correctamente escrito y coincida con el nombre `user_manager.apps.UserManagerConfig`.
 
 3. En el archivo urls.py de su proyecto Django incluya las urls de user_manager `path('user/', include('user_manager.urls')),`
@@ -34,7 +34,7 @@ Esta es una aplicación simple en Django para configurar un usuario completament
         path('user/', include('user_manager.urls')), #Incluirá las urls de la aplicación user_manager, a partir de del path "user/".
     ]
 ```
-* ### Nota
+>[!IMPORTANT]
     * Es importante tener configurado el envío de emails en el archivo settings.py de tu proyecto, para así poder gestionar el reseteo decontraseñas de usuario.
         ```python
         EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -248,7 +248,7 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
 ```
 * Permite iniciar sesión al usuario, se ha personalizado el template que renderiza la vista y el formulario a mostrar.
 
-
+>[!TIP]
 ```python
     @method_decorator(login_required, name='dispatch' )
 ```
@@ -327,7 +327,7 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
             'email': user_email,
             'protocol': 'http',
             'domain': '127.0.0.1:8000',
-            'uid': urlsafe_base64_encode(force_bytes(uspk)),
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': default_token_generator.make_to(user),
             'fullname': user.full_name
         }
@@ -370,7 +370,7 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
          context = {
              'password_form': password_form
          }
-         return render(request,'user_manager/password_resethtml',   context)
+         return render(request,'user_manager/password_resethtml', context)
     ```
     * En caso de que la petición no sea con el metodo `POST` se renderizará `user_manager/password_reset.html` con el formulario de reestablecimiento de contraseña en su contexto.
 
@@ -497,5 +497,5 @@ También verás que en el administrador de Django `/admin/` se ha agregado una s
 * Registra el modelo CustomUser y el administrador personalizado CustomUserAdmin en el sitio de administración de Django.
 
 
-### Nota 
+>[!NOTE]
 * La carpeta `templates/user_manager` tiene los templates a modo de ejemplos, modificalos según tus necesidades.
