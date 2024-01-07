@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'send_email.apps.SendEmailConfig',
     'home.apps.HomeConfig',
     'user_manager.apps.UserManagerConfig',
+    'password_generator.apps.PasswordGeneratorConfig',
+   
 ]
 
 MIDDLEWARE = [

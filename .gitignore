@@ -2,7 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=django
 
 a.py
-
+k.js
 ### Django ###
 *.log
 *.pot
